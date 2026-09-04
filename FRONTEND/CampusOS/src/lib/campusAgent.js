@@ -7,6 +7,8 @@
    ========================================================================== */
 
 // Point this at your agent route, e.g. VITE_AGENT_ENDPOINT=http://localhost:3000/api/agent
+import { getAgentUser } from './currentUser'
+
 const ENDPOINT = import.meta.env.VITE_AGENT_ENDPOINT ?? ''
 
 // The UI uses this to show a "Demo" vs "Live" badge and an honest empty state.
@@ -43,15 +45,22 @@ export async function askCampusAgent({ question, history = [], signal }) {
   const res = await fetch(ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, history }),
+    // The agent acts on behalf of whoever is signed in.
+    body: JSON.stringify({ question, history, user: getAgentUser() }),
     signal,
   })
 
+  const payload = await res.json().catch(() => null)
+
   if (!res.ok) {
-    throw new Error(`Agent request failed (${res.status} ${res.statusText})`)
+    // The backend wraps failures in the same envelope; surface its message.
+    const message =
+      payload?.info?.message ?? payload?.message ?? `${res.status} ${res.statusText}`
+    throw new Error(message)
   }
 
-  return normalizeReply(await res.json())
+  // Backend replies as { status, success, data, info } — the reply is in data.
+  return normalizeReply(payload?.data ?? payload)
 }
 
 /**

@@ -22,3 +22,24 @@ export function initialsOf(name = '') {
   const last = parts.length > 1 ? parts.at(-1)[0] : ''
   return (first + last).toUpperCase()
 }
+
+/**
+ * Who the agent should act as. Prefers the real signed-in session written by
+ * App.jsx; falls back to the placeholder above so the agent still has a name
+ * and student ID to work with while auth is a stub.
+ */
+export function getAgentUser() {
+  let session
+  try {
+    session = JSON.parse(localStorage.getItem('campus-user') || 'null')
+  } catch {
+    session = null
+  }
+
+  return {
+    name: session?.name || currentUser.name,
+    studentId: session?.studentId || currentUser.studentId,
+    email: session?.email || null,
+    role: session?.role || 'student',
+  }
+}
