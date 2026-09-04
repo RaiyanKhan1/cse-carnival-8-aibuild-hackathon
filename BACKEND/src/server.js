@@ -6,6 +6,7 @@ import roomsRoutes from './routes/roomsRoutes.js';
 import eventsRoutes from './routes/eventsRoutes.js';
 import announcementsRoutes from './routes/announcementsRoutes.js';
 import assignmentsRoutes from './routes/assignmentsRoutes.js';
+import agentRoutes from './routes/agentRoutes.js';
 import { ErrorHandler } from './components/errorHandler.js';
 import { HttpError, fromPrisma } from './components/errors.js';
 import { asyncHandler } from './components/asyncHandler.js';
@@ -26,6 +27,7 @@ app.use('/api/rooms', roomsRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/assignments', assignmentsRoutes);
+app.use('/api/agent', agentRoutes);
 
 // CONVERTS THROWN ERRORS INTO THE STANDARD JSON ENVELOPE
 app.use((err, req, res, _next) => {

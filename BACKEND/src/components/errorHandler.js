@@ -1,3 +1,5 @@
+import colors from 'colors';
+
 // LOGS FAILURES AND RETURNS A STRUCTURED JSON ERROR ENVELOPE
 const ErrorHandler = (err, res, status = 500, fallbackMsg = 'Internal server error') => {
   const service = process.env.SERVICE_NAME || 'campusos';

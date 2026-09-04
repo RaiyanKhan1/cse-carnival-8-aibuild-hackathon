@@ -1,19 +1,30 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { prisma } from './prismaClient.js';
 
-// RESOLVES THE REPO-LEVEL data/ FOLDER (BACKEND/../data RELATIVE TO BACKEND, BACKEND/src/db/seed.js → ../../../data)
-const DATA_DIR = path.resolve(new URL('.', import.meta.url).pathname, '..', '..', '..', 'data');
-// FALLBACK: WHEN CWD IS BACKEND, LOOK IN ../data
-const FALLBACK_DATA_DIR = path.resolve(process.cwd(), '..', 'data');
+// fileURLToPath, NOT url.pathname — ON WINDOWS pathname YIELDS "/D:/..." WHICH
+// path.resolve CANNOT USE.
+const HERE = path.dirname(fileURLToPath(import.meta.url)); // BACKEND/src/db
+const REPO_ROOT = path.resolve(HERE, '..', '..', '..');
 
-// LOADS A JSON FILE FROM THE SEED DATA DIRECTORY, OR RETURNS AN EMPTY ARRAY
+// THE SEED JSON CURRENTLY LIVES WITH THE FRONTEND; THE REPO-ROOT data/ FOLDER
+// FROM THE HACKATHON TEMPLATE IS CHECKED FIRST SO EITHER LAYOUT WORKS.
+const DATA_DIRS = [
+  path.join(REPO_ROOT, 'data'),
+  path.join(REPO_ROOT, 'FRONTEND', 'CampusOS', 'src', 'data'),
+  path.resolve(process.cwd(), '..', 'data'),
+];
+
+// LOADS ONE SEED FILE. THROWS RATHER THAN RETURNING [] — A SILENT EMPTY SEED
+// LOOKS LIKE SUCCESS AND LEAVES THE DATABASE BLANK.
 const load = (name) => {
-  const primary = path.join(DATA_DIR, name);
-  const fallback = path.join(FALLBACK_DATA_DIR, name);
-  const file = fs.existsSync(primary) ? primary : (fs.existsSync(fallback) ? fallback : null);
-  if (!file) return [];
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+  for (const dir of DATA_DIRS) {
+    const file = path.join(dir, name);
+    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+  }
+  const looked = DATA_DIRS.map((dir) => '  - ' + dir).join('\n');
+  throw new Error('Seed file "' + name + '" not found. Looked in:\n' + looked);
 };
 
 // CLEARS ALL TABLES THEN REINSERTS THE SEED DATA
