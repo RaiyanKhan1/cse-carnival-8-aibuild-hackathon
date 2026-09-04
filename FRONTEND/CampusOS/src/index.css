@@ -1,103 +1,431 @@
+/* ============================================================================
+   CampusOS — Design System
+   1. Tokens (color, elevation, radius, motion)
+   2. Base / reset
+   3. Typography
+   4. Motion primitives (keyframes + helpers)
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 1. TOKENS */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #2563eb;
-  --accent-bg: rgba(37, 99, 235, 0.1);
-  --accent-border: rgba(37, 99, 235, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* --- brand ramp --------------------------------------------------- */
+  --brand-50: #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-200: #c7d2fe;
+  --brand-300: #a5b4fc;
+  --brand-400: #818cf8;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --violet-400: #a78bfa;
+  --violet-500: #8b5cf6;
+  --violet-600: #7c3aed;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  /* --- status ------------------------------------------------------- */
+  --success: #047857;
+  --success-soft: #d1fae5;
+  --warning: #b45309;
+  --warning-soft: #fef3c7;
+  --danger: #be123c;
+  --danger-soft: #ffe4e6;
+  --info: #0369a1;
+  --info-soft: #e0f2fe;
+
+  /* --- semantic surfaces -------------------------------------------- */
+  --bg: #f5f6fb;
+  --surface: #ffffff;
+  --surface-2: #fafbfd;
+  --surface-hover: #f1f3f9;
+  --surface-glass: rgba(255, 255, 255, 0.72);
+
+  --border: #e5e8f0;
+  --border-strong: #d3d8e5;
+
+  --text-h: #0d1017;
+  --text: #545c6e;
+  --text-muted: #8a91a2;
+
+  /* --- accent -------------------------------------------------------- */
+  --accent: var(--brand-600);
+  --accent-hover: var(--brand-700);
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(79, 70, 229, 0.09);
+  --accent-soft-hover: rgba(79, 70, 229, 0.14);
+  --accent-border: rgba(79, 70, 229, 0.22);
+  --ring: rgba(79, 70, 229, 0.35);
+
+  --gradient-brand: linear-gradient(
+    135deg,
+    var(--brand-500) 0%,
+    var(--violet-500) 55%,
+    #a855f7 100%
+  );
+  --gradient-sheen: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0)
+  );
+
+  /* --- elevation ----------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(13, 16, 23, 0.05);
+  --shadow-sm:
+    0 1px 2px rgba(13, 16, 23, 0.04), 0 2px 6px -1px rgba(13, 16, 23, 0.05);
+  --shadow-md:
+    0 1px 3px rgba(13, 16, 23, 0.04), 0 8px 20px -6px rgba(13, 16, 23, 0.12);
+  --shadow-lg:
+    0 2px 6px rgba(13, 16, 23, 0.05), 0 24px 48px -14px rgba(13, 16, 23, 0.2);
+  --shadow-glow: 0 6px 20px -6px rgba(79, 70, 229, 0.5);
+
+  /* --- shape ---------------------------------------------------------- */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-full: 999px;
+
+  /* --- motion ---------------------------------------------------------- */
+  --dur-1: 0.12s;
+  --dur-2: 0.2s;
+  --dur-3: 0.32s;
+  --dur-4: 0.5s;
+  --dur-5: 0.75s;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* --- type ------------------------------------------------------------ */
+  --sans:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --display:
+    "Plus Jakarta Sans", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+
+  --sidebar-w: 264px;
+
+  font: 15px/1.55 var(--sans);
+  letter-spacing: 0.05px;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+/* --- dark theme -------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --success: #34d399;
+    --success-soft: rgba(52, 211, 153, 0.14);
+    --warning: #fbbf24;
+    --warning-soft: rgba(251, 191, 36, 0.14);
+    --danger: #fb7185;
+    --danger-soft: rgba(251, 113, 133, 0.14);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.14);
+
+    --bg: #0a0c12;
+    --surface: #12151d;
+    --surface-2: #161a24;
+    --surface-hover: #1c2130;
+    --surface-glass: rgba(18, 21, 29, 0.72);
+
+    --border: #232838;
+    --border-strong: #333a4d;
+
+    --text-h: #f2f4f9;
+    --text: #98a1b4;
+    --text-muted: #6c748a;
+
+    --accent: var(--brand-400);
+    --accent-hover: var(--brand-300);
+    --accent-contrast: #0a0c12;
+    --accent-soft: rgba(129, 140, 248, 0.14);
+    --accent-soft-hover: rgba(129, 140, 248, 0.2);
+    --accent-border: rgba(129, 140, 248, 0.28);
+    --ring: rgba(129, 140, 248, 0.45);
+
+    --gradient-sheen: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0)
+    );
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-md:
+      0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 20px -6px rgba(0, 0, 0, 0.55);
+    --shadow-lg:
+      0 2px 6px rgba(0, 0, 0, 0.4), 0 24px 48px -14px rgba(0, 0, 0, 0.7);
+    --shadow-glow: 0 6px 22px -6px rgba(99, 102, 241, 0.55);
+
+    color-scheme: dark;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #3b82f6;
-    --accent-bg: rgba(59, 130, 246, 0.15);
-    --accent-border: rgba(59, 130, 246, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ---------------------------------------------------------------- 2. BASE */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100svh;
+  isolation: isolate;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
+::selection {
+  background: var(--accent-soft-hover);
   color: var(--text-h);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+/* Slim, theme-aware scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+  background-clip: content-box;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* -------------------------------------------------------- 3. TYPOGRAPHY */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  color: var(--text-h);
+  margin: 0;
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.75px;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+h2 {
+  font-size: clamp(19px, 1.6vw, 22px);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.35px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 620;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  text-underline-offset: 2px;
+  transition: color var(--dur-2) var(--ease);
+}
+a:hover {
+  color: var(--accent-hover);
 }
 
 code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  font-family: var(--mono);
+  font-size: 0.86em;
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  color: var(--text-h);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+}
+
+/* ----------------------------------------------- 4. MOTION PRIMITIVES */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-12px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--ring);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -5%, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-4%, 4%, 0) scale(0.95);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Helpers ---------------------------------------------------------------- */
+
+.anim-in {
+  animation: fade-in-up var(--dur-4) var(--ease-out) both;
+}
+
+/* Children fade in one after another; set --i on each child. */
+.stagger > * {
+  animation: fade-in-up var(--dur-4) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+.skeleton {
+  border-radius: var(--r-sm);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--text-muted) 14%, transparent) 50%,
+      transparent 100%
+    )
+    var(--surface-hover);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Honour reduced-motion: keep state changes, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
