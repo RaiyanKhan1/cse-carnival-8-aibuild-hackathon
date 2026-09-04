@@ -13,7 +13,8 @@ export const SchedulesService = {
   },
 
   async create(data) {
-    if (!data?.course || !data?.room) throw BadRequest('MISSING_FIELDS');
+    const required = ['course', 'day', 'start_time', 'end_time', 'room'];
+    for (const f of required) if (!data?.[f]) throw BadRequest(`MISSING_FIELD:${f}`);
     if (!DAYS.includes(data.day)) throw BadRequest('INVALID_DAY');
     if (!isTime(data.start_time) || !isTime(data.end_time)) throw BadRequest('INVALID_TIME');
     const id = data.id || await nextId('sch', 'schedule');

@@ -1,4 +1,5 @@
 // CampusOS Prisma schema — PostgreSQL
+// Source of truth: ../schema/schema.md
 
 generator client {
   provider = "prisma-client-js"
@@ -9,8 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ─── Schedules ────────────────────────────────────────────────
 model Schedule {
-  id         String   @id
+  id         String  @id
   course     String
   title      String?
   day        String
@@ -21,19 +23,19 @@ model Schedule {
   section    String?
 
   @@index([course])
+  @@index([day])
 }
 
+// ─── Rooms + Bookings ─────────────────────────────────────────
 model Room {
-  id          String       @id
-  room_number String       @unique
+  id          String         @id
+  room_number String         @unique
   type        String
   capacity    Int
-  equipment   String[]     // native PostgreSQL text array
+  equipment   String[]       // list of equipment (e.g. ["projector","AC"])
   floor       Int
-  status      String
+  status      String         // "available" | "unavailable"
   bookings    RoomBooking[]
-
-  @@index([room_number])
 }
 
 model RoomBooking {
@@ -49,6 +51,7 @@ model RoomBooking {
   @@index([room_id, date])
 }
 
+// ─── Events + Registrations ───────────────────────────────────
 model Event {
   id            String              @id
   name          String
@@ -60,8 +63,8 @@ model Event {
   venue         String?
   organizer     String?
   capacity      Int
-  registered    Int                 @default(0)
-  status        String
+  registered    Int                  @default(0)
+  status        String              // "upcoming" | "ongoing" | "completed" | "cancelled" | "full"
   registrations EventRegistration[]
 
   @@index([date])
@@ -76,18 +79,20 @@ model EventRegistration {
   @@id([event_id, student_id])
 }
 
+// ─── Announcements ────────────────────────────────────────────
 model Announcement {
   id        String  @id
   title     String
   body      String?
   date      String
-  priority  String
+  priority  String  // "high" | "medium" | "low"
   posted_by String?
   expires   String?
 
   @@index([date])
 }
 
+// ─── Assignments ──────────────────────────────────────────────
 model Assignment {
   id                  String  @id
   course              String
@@ -97,7 +102,7 @@ model Assignment {
   assigned_date       String
   deadline            String
   submission_platform String?
-  status              String
+  status              String  // "pending" | "submitted" | "graded" | "late"
   marks               Int     @default(0)
 
   @@index([course])

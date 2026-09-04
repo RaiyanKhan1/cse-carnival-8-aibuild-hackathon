@@ -3,6 +3,8 @@ import { BadRequest, NotFound, Conflict } from '../components/errors.js';
 import { isTime, isDate } from '../utils/time.js';
 import { nextId } from '../utils/idGenerator.js';
 
+const STATUSES = ['upcoming', 'ongoing', 'completed', 'cancelled', 'full'];
+
 export const EventsService = {
   async list() { return EventsModel.all(); },
 
@@ -13,16 +15,31 @@ export const EventsService = {
   },
 
   async create(data) {
-    if (!data?.name || !data?.date) throw BadRequest('MISSING_FIELDS');
-    if (!isDate(data.date) || !isTime(data.start_time) || !isTime(data.end_time)) {
-      throw BadRequest('INVALID_FORMAT');
-    }
+    const required = ['name', 'date', 'start_time', 'end_time', 'end_date', 'capacity'];
+    for (const f of required) if (data?.[f] === undefined || data?.[f] === null) throw BadRequest(`MISSING_FIELD:${f}`);
+    if (!isDate(data.date) || !isDate(data.end_date)) throw BadRequest('INVALID_DATE');
+    if (!isTime(data.start_time) || !isTime(data.end_time)) throw BadRequest('INVALID_TIME');
+    if (data.status && !STATUSES.includes(data.status)) throw BadRequest('INVALID_STATUS');
+    if (typeof data.capacity !== 'number' || data.capacity < 0) throw BadRequest('INVALID_CAPACITY');
     const id = data.id || await nextId('evt', 'event');
     const { registrations: _r, ...rest } = data;
-    return EventsModel.create({ ...rest, id, registered: rest.registered ?? 0, status: rest.status ?? 'upcoming' });
+    return EventsModel.create({
+      ...rest,
+      id,
+      registered: rest.registered ?? 0,
+      status: rest.status ?? 'upcoming',
+    });
   },
 
   async update(id, data) {
+    if (data.status && !STATUSES.includes(data.status)) throw BadRequest('INVALID_STATUS');
+    if (data.capacity !== undefined && (typeof data.capacity !== 'number' || data.capacity < 0)) {
+      throw BadRequest('INVALID_CAPACITY');
+    }
+    if (data.date && !isDate(data.date)) throw BadRequest('INVALID_DATE');
+    if (data.end_date && !isDate(data.end_date)) throw BadRequest('INVALID_DATE');
+    if (data.start_time && !isTime(data.start_time)) throw BadRequest('INVALID_TIME');
+    if (data.end_time && !isTime(data.end_time)) throw BadRequest('INVALID_TIME');
     const row = await EventsModel.update(id, data);
     if (!row) throw NotFound();
     return row;
