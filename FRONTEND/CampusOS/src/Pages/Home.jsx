@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PageHeader from '../Components/PageHeader'
+import PromptBar from '../Components/PromptBar'
 import rooms from '../data/rooms.json'
 import events from '../data/events.json'
 import schedules from '../data/schedules.json'
@@ -35,6 +36,10 @@ function Home() {
           {urgent > 0 && <span className="badge badge-danger">{urgent}</span>}
         </Link>
       </PageHeader>
+
+      <PromptBar />
+
+      <h2 className="section-title">Today at a glance</h2>
 
       <div className="grid stagger">
         {stats.map((s, i) => (

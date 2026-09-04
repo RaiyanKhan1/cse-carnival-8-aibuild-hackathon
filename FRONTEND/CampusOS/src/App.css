@@ -47,6 +47,17 @@
   max-width: 62ch;
 }
 
+/* --- section title -------------------------------------------------------- */
+
+.section-title {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
 /* --- grid ---------------------------------------------------------------- */
 
 .grid {
