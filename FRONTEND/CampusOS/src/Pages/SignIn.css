@@ -51,23 +51,6 @@
   padding-top: 4px;
 }
 
-.auth-session {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.auth-session-label {
-  margin-bottom: 4px;
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-}
-
 .auth-switch {
   color: var(--text-muted);
   font-size: 13px;

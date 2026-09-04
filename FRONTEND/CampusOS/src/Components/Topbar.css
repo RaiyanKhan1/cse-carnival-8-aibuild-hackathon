@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Topbar — date, notifications, profile
+   ========================================================================== */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 60px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  animation: fade-in var(--dur-4) var(--ease-out) both;
+}
+
+.topbar-date {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- icon button (bell) --------------------------------------------------- */
+
+.icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  color: var(--text);
+  background: transparent;
+  transition:
+    color var(--dur-2) var(--ease),
+    background var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease-spring);
+}
+
+.icon-button:hover {
+  color: var(--text-h);
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.icon-button:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.icon-button-glyph {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Unread marker, ringed so it reads on any background. */
+.notif-dot {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-full);
+  background: var(--danger);
+  box-shadow: 0 0 0 2px var(--surface);
+  animation: pulse-soft 2.4s var(--ease-in-out) infinite;
+}
+
+/* --- avatar --------------------------------------------------------------- */
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  object-fit: cover;
+  font-family: var(--display);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #fff;
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-xs);
+}
+
+.avatar-lg {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+/* --- profile button ------------------------------------------------------- */
+
+.profile {
+  position: relative;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 9px 4px 4px;
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  font: inherit;
+  color: var(--text-h);
+  background: transparent;
+  transition:
+    background var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+
+.profile-button:hover,
+.profile-button[aria-expanded='true'] {
+  background: var(--surface-hover);
+  border-color: var(--border);
+}
+
+.profile-name {
+  font-size: 13.5px;
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.profile-caret {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.profile-button[aria-expanded='true'] .profile-caret {
+  transform: rotate(180deg);
+}
+
+/* --- dropdown ------------------------------------------------------------- */
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  width: 272px;
+  padding: 6px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top right;
+  animation: fade-in-scale var(--dur-2) var(--ease-out) both;
+}
+
+.profile-menu-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px;
+  margin-bottom: 4px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+}
+
+.profile-menu-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.profile-menu-name {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 640;
+  letter-spacing: -0.2px;
+  color: var(--text-h);
+}
+
+.profile-menu-sub {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.profile-menu-group {
+  padding: 4px 0;
+  border-top: 1px solid var(--border);
+}
+
+.profile-menu-group:first-of-type {
+  border-top: none;
+}
+
+.profile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--r-sm);
+  font: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  background: transparent;
+  transition:
+    color var(--dur-1) var(--ease),
+    background var(--dur-1) var(--ease);
+}
+
+.profile-menu-item:hover:not(:disabled) {
+  color: var(--text-h);
+  background: var(--surface-hover);
+}
+
+.profile-menu-item.is-danger:hover:not(:disabled) {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.profile-menu-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --- responsive ----------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .topbar {
+    height: 54px;
+    padding: 0 18px;
+  }
+
+  .topbar-date {
+    font-size: 12.5px;
+  }
+
+  .profile-name,
+  .profile-caret {
+    display: none;
+  }
+
+  .profile-button {
+    padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-date {
+    /* The sidebar already shows where you are; the date is the first to go. */
+    display: none;
+  }
+
+  .topbar {
+    justify-content: flex-end;
+  }
+}

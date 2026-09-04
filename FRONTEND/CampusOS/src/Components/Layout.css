@@ -60,10 +60,18 @@
 
 /* --- main column --------------------------------------------------------- */
 
+/* Sits beside the sidebar and stacks the topbar above the page. */
+.layout-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .layout-main {
   flex: 1;
   min-width: 0;
-  padding: 34px 36px 64px;
+  padding: 30px 36px 64px;
 }
 
 .layout-page {

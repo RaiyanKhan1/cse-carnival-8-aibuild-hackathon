@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import PageHeader from '../Components/PageHeader'
 import './SignIn.css'
 
-// DISPLAYS SIGN-IN AND ACCOUNT CONTROLS
-function SignIn({ user, onSignIn, onSignOut }) {
+// SIGN-IN FORM. ONLY REACHABLE WHILE SIGNED OUT — THE ROUTE REDIRECTS OTHERWISE.
+function SignIn({ onSignIn }) {
   const navigate = useNavigate()
 
   // SIGNS IN WITH THE SUBMITTED DETAILS
@@ -16,37 +16,6 @@ function SignIn({ user, onSignIn, onSignOut }) {
 
     onSignIn({ email, role })
     navigate('/')
-  }
-
-  // SIGNS OUT THE CURRENT USER
-  function handleSignOut() {
-    onSignOut()
-  }
-
-  if (user) {
-    return (
-      <>
-        <PageHeader
-          eyebrow="Account"
-          title="You are signed in"
-          subtitle="Review your current CampusOS session."
-        />
-
-        <div className="card auth-card">
-          <div className="auth-session">
-            <div>
-              <p className="auth-session-label">Email</p>
-              <p className="card-title">{user.email}</p>
-            </div>
-            <span className="badge">{user.role}</span>
-          </div>
-
-          <button className="btn btn-secondary" onClick={handleSignOut} type="button">
-            Sign out
-          </button>
-        </div>
-      </>
-    )
   }
 
   return (

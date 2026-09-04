@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import Layout from './Components/Layout'
 import Home from './Pages/Home'
@@ -43,17 +43,17 @@ function App() {
         <Route path="events" element={<Events />} />
         <Route path="announcements" element={<Announcements />} />
         <Route path="assignments" element={<Assignments />} />
+        {/* AUTH PAGES ARE FOR SIGNED-OUT VISITORS ONLY. ANYONE ALREADY
+            SIGNED IN IS SENT BACK TO THE DASHBOARD. `replace` KEEPS THEM
+            OUT OF HISTORY, SO BACK DOES NOT BOUNCE BETWEEN THE TWO. */}
         <Route
           path="signin"
-          element={
-            <SignIn
-              onSignIn={handleSignIn}
-              onSignOut={handleSignOut}
-              user={user}
-            />
-          }
+          element={user ? <Navigate replace to="/" /> : <SignIn onSignIn={handleSignIn} />}
         />
-        <Route path="signup" element={<SignUp onSignUp={handleSignIn} />} />
+        <Route
+          path="signup"
+          element={user ? <Navigate replace to="/" /> : <SignUp onSignUp={handleSignIn} />}
+        />
       </Route>
     </Routes>
   )

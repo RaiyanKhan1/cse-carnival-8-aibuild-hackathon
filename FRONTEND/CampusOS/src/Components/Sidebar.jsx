@@ -71,28 +71,19 @@ function Sidebar({ user, onSignOut }) {
         ))}
       </nav>
 
-      <div className="sidebar-account">
-        {user ? (
-          <>
-            <div className="sidebar-user">
-              <span className="sidebar-user-email">{user.email}</span>
-              <span className="badge">{user.role}</span>
-            </div>
-            <button className="sidebar-auth-button" onClick={handleSignOut} type="button">
-              Sign out
-            </button>
-          </>
-        ) : (
-          <>
-            <NavLink className="sidebar-auth-link" to="/signin">
-              Sign in
-            </NavLink>
-            <NavLink className="sidebar-auth-link" to="/signup">
-              Sign up
-            </NavLink>
-          </>
-        )}
-      </div>
+      {/* SIGNING IN AND UP LIVE ON THEIR OWN PAGES, SO THE SIDEBAR ONLY
+          SHOWS WHO IS CURRENTLY SIGNED IN. NOTHING RENDERS WHEN SIGNED OUT. */}
+      {user && (
+        <div className="sidebar-account">
+          <div className="sidebar-user">
+            <span className="sidebar-user-email">{user.email}</span>
+            <span className="badge">{user.role}</span>
+          </div>
+          <button className="sidebar-auth-button" onClick={handleSignOut} type="button">
+            Sign out
+          </button>
+        </div>
+      )}
 
       <div className="sidebar-footer">
         <span className="status-dot" aria-hidden="true" />

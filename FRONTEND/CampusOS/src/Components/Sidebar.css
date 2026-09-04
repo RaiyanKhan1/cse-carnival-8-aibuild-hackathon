@@ -250,7 +250,6 @@
   white-space: nowrap;
 }
 
-.sidebar-auth-link,
 .sidebar-auth-button {
   width: 100%;
   padding: 8px 10px;
@@ -266,7 +265,6 @@
   cursor: pointer;
 }
 
-.sidebar-auth-link:hover,
 .sidebar-auth-button:hover {
   color: var(--accent);
   border-color: var(--accent-border);
