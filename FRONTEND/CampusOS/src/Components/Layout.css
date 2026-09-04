@@ -1,20 +1,97 @@
+/* ==========================================================================
+   Layout — app shell, ambient background, page transitions
+   ========================================================================== */
+
 .layout {
   display: flex;
   min-height: 100svh;
+  position: relative;
 }
+
+/* Two slow-drifting colour washes behind everything. Fixed + pointer-events
+   none so they never affect layout or interaction. */
+.layout-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.layout-ambient::before,
+.layout-ambient::after {
+  content: '';
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.layout-ambient::before {
+  top: -16vmax;
+  left: -10vmax;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--brand-500) 24%, transparent),
+    transparent 70%
+  );
+  animation: drift 26s var(--ease-in-out) infinite;
+}
+
+.layout-ambient::after {
+  right: -14vmax;
+  bottom: -18vmax;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--violet-500) 20%, transparent),
+    transparent 70%
+  );
+  animation: drift 32s var(--ease-in-out) -8s infinite reverse;
+}
+
+@media (prefers-color-scheme: dark) {
+  .layout-ambient::before,
+  .layout-ambient::after {
+    opacity: 0.55;
+  }
+}
+
+/* --- main column --------------------------------------------------------- */
 
 .layout-main {
   flex: 1;
   min-width: 0;
-  padding: 32px;
+  padding: 34px 36px 64px;
 }
 
-@media (max-width: 768px) {
+.layout-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  /* Re-keyed on every route change, so this replays as a page transition. */
+  animation: page-enter var(--dur-4) var(--ease-out) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 860px) {
   .layout {
     flex-direction: column;
   }
 
   .layout-main {
-    padding: 20px 16px;
+    padding: 22px 18px 48px;
   }
 }

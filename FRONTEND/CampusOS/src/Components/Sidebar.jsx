@@ -3,6 +3,7 @@ import './Sidebar.css'
 
 // NAV ITEMS SHOWN IN THE SIDEBAR
 const navItems = [
+  { to: '/', label: 'Dashboard', icon: 'grid', end: true },
   { to: '/schedule', label: 'Class Schedule', icon: 'calendar' },
   { to: '/rooms', label: 'Rooms', icon: 'door' },
   { to: '/events', label: 'Events', icon: 'star' },
@@ -29,25 +30,41 @@ function Icon({ name }) {
   )
 }
 
-// SIDE NAVIGATION BAR WITH THE FIVE MAIN SECTIONS
+// SIDE NAVIGATION BAR WITH THE MAIN SECTIONS
 function Sidebar() {
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">CampusOS</div>
+      <NavLink to="/" className="sidebar-brand" end>
+        <span className="brand-mark" aria-hidden="true">
+          C
+        </span>
+        <span className="brand-text">
+          <span className="brand-name">CampusOS</span>
+          <span className="brand-sub">Campus intelligence</span>
+        </span>
+      </NavLink>
 
-      <nav className="sidebar-nav">
-        <NavLink to="/" end className="nav-link">
-          <Icon name="grid" />
-          <span>Dashboard</span>
-        </NavLink>
+      <nav className="sidebar-nav" aria-label="Main">
+        <p className="sidebar-section">Workspace</p>
 
-        {navItems.map((item) => (
-          <NavLink key={item.to} to={item.to} className="nav-link">
+        {navItems.map((item, i) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className="nav-link"
+            style={{ '--i': i }}
+          >
             <Icon name={item.icon} />
             <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
+
+      <div className="sidebar-footer">
+        <span className="status-dot" aria-hidden="true" />
+        <span>Live campus data</span>
+      </div>
     </aside>
   )
 }

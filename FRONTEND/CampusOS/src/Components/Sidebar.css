@@ -1,79 +1,323 @@
+/* ==========================================================================
+   Sidebar — primary navigation
+   ========================================================================== */
+
 .sidebar {
-  width: 240px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  width: var(--sidebar-w);
+  height: 100svh;
   flex-shrink: 0;
-  box-sizing: border-box;
-  padding: 24px 16px;
-  border-right: 1px solid var(--border);
-  background: var(--bg);
+  padding: 22px 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
+  border-right: 1px solid var(--border);
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  animation: slide-in-left var(--dur-5) var(--ease-out) both;
 }
 
+/* --- brand -------------------------------------------------------------- */
+
 .sidebar-brand {
-  font-family: var(--heading);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 2px 8px 0;
+  text-decoration: none;
+}
+
+.brand-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-glow);
+  color: #fff;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  overflow: hidden;
+  transition:
+    transform var(--dur-3) var(--ease-spring),
+    box-shadow var(--dur-3) var(--ease);
+}
+
+/* Light sweep across the mark on hover. */
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform var(--dur-5) var(--ease-out);
+}
+
+.sidebar-brand:hover .brand-mark {
+  transform: rotate(-6deg) scale(1.06);
+}
+.sidebar-brand:hover .brand-mark::after {
+  transform: translateX(120%);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.brand-name {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.45px;
   color: var(--text-h);
-  padding: 0 8px;
+}
+
+.brand-sub {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+}
+
+/* --- nav ---------------------------------------------------------------- */
+
+.sidebar-section {
+  padding: 0 12px 8px;
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .nav-link {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 15px;
+  gap: 11px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text);
   text-decoration: none;
+  isolation: isolate;
+  animation: slide-in-left var(--dur-4) var(--ease-out) both;
+  animation-delay: calc(120ms + var(--i, 0) * 45ms);
+  transition:
+    color var(--dur-2) var(--ease),
+    transform var(--dur-2) var(--ease-out);
+}
+
+/* Hover/active wash lives on a pseudo-element so it can fade independently. */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--surface-hover);
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity var(--dur-2) var(--ease),
+    transform var(--dur-3) var(--ease-spring);
+}
+
+/* Accent bar that grows out of the left edge when active. */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 3px;
+  height: 20px;
+  border-radius: 0 var(--r-full) var(--r-full) 0;
+  background: var(--accent);
+  transform: translateY(-50%) scaleY(0);
+  transform-origin: center;
+  opacity: 0;
+  transition:
+    transform var(--dur-3) var(--ease-spring),
+    opacity var(--dur-2) var(--ease);
 }
 
 .nav-link:hover {
-  background: var(--code-bg);
   color: var(--text-h);
+  transform: translateX(2px);
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.nav-link:hover .nav-icon {
+  transform: scale(1.12);
+  stroke: var(--accent);
 }
 
 .nav-link.active {
-  background: var(--accent);
-  color: #fff;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-link.active::before {
+  opacity: 1;
+  transform: scale(1);
+  background: var(--accent-soft);
+}
+
+.nav-link.active::after {
+  opacity: 1;
+  transform: translateY(-50%) scaleY(1);
+}
+
+.nav-link.active .nav-icon {
+  stroke: var(--accent);
+}
+
+.nav-link:active {
+  transform: translateX(2px) scale(0.985);
 }
 
 .nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   flex-shrink: 0;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
+  transition:
+    transform var(--dur-3) var(--ease-spring),
+    stroke var(--dur-2) var(--ease);
 }
 
-@media (max-width: 768px) {
+/* --- footer ------------------------------------------------------------- */
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--text-muted);
+  animation: fade-in var(--dur-5) var(--ease-out) 350ms both;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 20%, transparent);
+  animation: pulse-soft 2.4s var(--ease-in-out) infinite;
+}
+
+/* --- mobile: horizontal tab bar ---------------------------------------- */
+
+@media (max-width: 860px) {
   .sidebar {
+    position: sticky;
+    top: 0;
     width: 100%;
+    height: auto;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
+    gap: 14px;
+    padding: 10px 14px;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    overflow-x: auto;
+    animation: fade-in var(--dur-4) var(--ease-out) both;
+  }
+
+  .sidebar-section,
+  .sidebar-footer,
+  .brand-text {
+    display: none;
   }
 
   .sidebar-nav {
     flex-direction: row;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+    white-space: nowrap;
+    animation: none;
+  }
+
+  .nav-link:hover {
+    transform: none;
+  }
+
+  /* The left accent bar becomes an underline. */
+  .nav-link::after {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: -2px;
+    width: auto;
+    height: 2px;
+    border-radius: var(--r-full);
+    transform: translateY(0) scaleX(0);
+  }
+
+  .nav-link.active::after {
+    transform: translateY(0) scaleX(1);
   }
 
   .nav-link span {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav-link span {
     display: none;
+  }
+  .nav-link {
+    padding: 9px 11px;
   }
 }
