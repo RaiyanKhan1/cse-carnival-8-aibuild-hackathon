@@ -2,12 +2,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { prisma } from './prismaClient.js';
 
-const DATA_DIR = path.resolve('../data');
+// RESOLVES THE REPO-LEVEL data/ FOLDER (BACKEND/../data RELATIVE TO BACKEND, BACKEND/src/db/seed.js → ../../../data)
+const DATA_DIR = path.resolve(new URL('.', import.meta.url).pathname, '..', '..', '..', 'data');
+// FALLBACK: WHEN CWD IS BACKEND, LOOK IN ../data
+const FALLBACK_DATA_DIR = path.resolve(process.cwd(), '..', 'data');
 
 // LOADS A JSON FILE FROM THE SEED DATA DIRECTORY, OR RETURNS AN EMPTY ARRAY
 const load = (name) => {
-  const file = path.join(DATA_DIR, name);
-  if (!fs.existsSync(file)) return [];
+  const primary = path.join(DATA_DIR, name);
+  const fallback = path.join(FALLBACK_DATA_DIR, name);
+  const file = fs.existsSync(primary) ? primary : (fs.existsSync(fallback) ? fallback : null);
+  if (!file) return [];
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 };
 

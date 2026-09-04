@@ -9,6 +9,7 @@ import assignmentsRoutes from './routes/assignmentsRoutes.js';
 import { ErrorHandler } from './components/errorHandler.js';
 import { HttpError, fromPrisma } from './components/errors.js';
 import { asyncHandler } from './components/asyncHandler.js';
+import { startScheduler } from './services/schedulerService.js';
 
 const app = express();
 app.use(cors());
@@ -39,4 +40,5 @@ app.use((err, req, res, _next) => {
 });
 
 const PORT = process.env.PORT || 3000;
+startScheduler();
 app.listen(PORT, () => console.log(`CampusOS backend on http://localhost:${PORT}`));
