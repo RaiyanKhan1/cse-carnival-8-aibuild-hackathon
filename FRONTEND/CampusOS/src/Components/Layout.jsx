@@ -3,14 +3,14 @@ import Sidebar from './Sidebar'
 import './Layout.css'
 
 // APP SHELL WITH THE SIDEBAR AND THE ACTIVE PAGE
-function Layout() {
+function Layout({ user, onSignOut }) {
   const { pathname } = useLocation()
 
   return (
     <div className="layout">
       <div className="layout-ambient" aria-hidden="true" />
 
-      <Sidebar />
+      <Sidebar onSignOut={onSignOut} user={user} />
 
       <main className="layout-main">
         {/* KEYED ON THE ROUTE SO THE ENTER ANIMATION REPLAYS ON NAVIGATION */}

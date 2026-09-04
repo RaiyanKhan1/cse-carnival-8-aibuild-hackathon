@@ -1,0 +1,78 @@
+.auth-card {
+  width: 100%;
+  max-width: 560px;
+  padding: 24px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 7px;
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.auth-field input,
+.auth-field select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text-h);
+  background: var(--surface-2);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color var(--dur-2) var(--ease),
+    box-shadow var(--dur-2) var(--ease);
+}
+
+.auth-field input::placeholder {
+  color: var(--text-muted);
+}
+
+.auth-field input:focus,
+.auth-field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.auth-session {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.auth-session-label {
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.auth-switch {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.auth-switch a {
+  font-weight: 600;
+}

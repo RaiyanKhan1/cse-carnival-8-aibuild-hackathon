@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import './Sidebar.css'
 
 // NAV ITEMS SHOWN IN THE SIDEBAR
@@ -9,6 +9,7 @@ const navItems = [
   { to: '/events', label: 'Events', icon: 'star' },
   { to: '/announcements', label: 'Announcements', icon: 'bell' },
   { to: '/assignments', label: 'Assignments', icon: 'file' },
+  { to: '/signin', label: 'Account', icon: 'user' },
 ]
 
 // SIMPLE STROKE ICON PATHS KEYED BY NAME
@@ -19,6 +20,7 @@ const iconPaths = {
   star: 'M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z',
   bell: 'M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M10.5 20a1.8 1.8 0 0 0 3 0',
   file: 'M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7zM14 3v4h4M9 13h6M9 17h4',
+  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
 }
 
 // RENDERS A SMALL LINE ICON BY NAME
@@ -31,7 +33,15 @@ function Icon({ name }) {
 }
 
 // SIDE NAVIGATION BAR WITH THE MAIN SECTIONS
-function Sidebar() {
+function Sidebar({ user, onSignOut }) {
+  const navigate = useNavigate()
+
+  // SIGNS OUT AND OPENS THE ACCOUNT PAGE
+  function handleSignOut() {
+    onSignOut()
+    navigate('/signin')
+  }
+
   return (
     <aside className="sidebar">
       <NavLink to="/" className="sidebar-brand" end>
@@ -60,6 +70,29 @@ function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      <div className="sidebar-account">
+        {user ? (
+          <>
+            <div className="sidebar-user">
+              <span className="sidebar-user-email">{user.email}</span>
+              <span className="badge">{user.role}</span>
+            </div>
+            <button className="sidebar-auth-button" onClick={handleSignOut} type="button">
+              Sign out
+            </button>
+          </>
+        ) : (
+          <>
+            <NavLink className="sidebar-auth-link" to="/signin">
+              Sign in
+            </NavLink>
+            <NavLink className="sidebar-auth-link" to="/signup">
+              Sign up
+            </NavLink>
+          </>
+        )}
+      </div>
 
       <div className="sidebar-footer">
         <span className="status-dot" aria-hidden="true" />

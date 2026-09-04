@@ -222,6 +222,57 @@
 
 /* --- footer ------------------------------------------------------------- */
 
+.sidebar-account {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.sidebar-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sidebar-user-email {
+  width: 100%;
+  overflow: hidden;
+  color: var(--text-h);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-auth-link,
+.sidebar-auth-button {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text-h);
+  background: var(--surface-2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sidebar-auth-link:hover,
+.sidebar-auth-button:hover {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+
 .sidebar-footer {
   display: flex;
   align-items: center;
@@ -264,6 +315,7 @@
   }
 
   .sidebar-section,
+  .sidebar-account,
   .sidebar-footer,
   .brand-text {
     display: none;
