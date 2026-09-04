@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Events — date-ordered agenda
+   ========================================================================== */
+
+.event-days {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* --- event rows ---------------------------------------------------------- */
+
+.event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-card {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 150px;
+  gap: 18px;
+  align-items: start;
+  padding: 16px 18px;
+}
+
+/* --- time rail ----------------------------------------------------------- */
+
+.event-time {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 18px;
+  border-right: 1px solid var(--border);
+  min-height: 44px;
+}
+
+.time-start {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time-end {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* --- body ---------------------------------------------------------------- */
+
+.event-main {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.event-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.event-desc {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 2px;
+}
+
+/* --- capacity ------------------------------------------------------------ */
+
+.event-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 3px;
+}
+
+.seat-bar {
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--surface-hover);
+  overflow: hidden;
+}
+
+.seat-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gradient-brand);
+  /* Grows out from the left the first time the row appears. */
+  transform-origin: left center;
+  animation: seat-grow var(--dur-5) var(--ease-out) both;
+}
+
+.seat-bar.is-tight span {
+  background: var(--warning);
+}
+
+.seat-bar.is-full span {
+  background: var(--danger);
+}
+
+@keyframes seat-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.seat-text {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.seat-text strong {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text-h);
+}
+
+.seat-left {
+  margin-left: auto;
+  font-size: 11.5px;
+}
+
+/* --- responsive ---------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .event-card {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .event-seats {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+  }
+
+  .seat-bar {
+    flex: 1;
+    margin-top: 10px;
+  }
+
+  .seat-text {
+    margin-top: 10px;
+    white-space: nowrap;
+  }
+
+  .seat-left {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .event-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .event-time {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 0;
+    padding-right: 0;
+    padding-bottom: 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}

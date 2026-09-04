@@ -1,0 +1,136 @@
+/* ==========================================================================
+   Announcements — notice board, newest first
+   ========================================================================== */
+
+.ann-header-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ann-days {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.ann-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --- notice card --------------------------------------------------------- */
+
+.ann-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 16px 18px 16px 22px;
+}
+
+/* Priority reads as a colour stripe down the leading edge. */
+.ann-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  border-radius: var(--r-lg) 0 0 var(--r-lg);
+  background: var(--border-strong);
+}
+
+.ann-high::after {
+  background: var(--danger);
+}
+
+.ann-medium::after {
+  background: var(--warning);
+}
+
+.ann-low::after {
+  background: var(--info);
+}
+
+.ann-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ann-head .card-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.ann-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ann-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 92ch;
+}
+
+.ann-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+/* Expiring today or tomorrow — worth catching the eye. */
+.ann-meta .is-soon {
+  color: var(--warning);
+  font-weight: 550;
+}
+
+/* --- expired ------------------------------------------------------------- */
+
+.ann-expired {
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--border-strong);
+}
+
+.ann-card.is-expired {
+  opacity: 0.62;
+  box-shadow: none;
+  transition: opacity var(--dur-2) var(--ease);
+}
+
+.ann-card.is-expired:hover {
+  opacity: 1;
+}
+
+.ann-card.is-expired::after {
+  background: var(--border-strong);
+}
+
+.ann-card.is-expired .card-title {
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .ann-card {
+    padding: 14px 14px 14px 18px;
+  }
+
+  .ann-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

@@ -1,0 +1,222 @@
+/* ==========================================================================
+   Assignments — deadline-ordered coursework
+   ========================================================================== */
+
+.asgn-header-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.asgn-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.asgn-card {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) 74px;
+  gap: 18px;
+  align-items: start;
+  padding: 16px 18px;
+}
+
+/* --- deadline rail ------------------------------------------------------- */
+
+.asgn-due {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding-right: 18px;
+  border-right: 1px solid var(--border);
+}
+
+.due-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+/* Urgency colours the date chip and the countdown together. */
+.asgn-card.is-soon .due-label {
+  color: var(--warning);
+}
+
+.asgn-card.is-urgent .due-label,
+.asgn-card.is-overdue .due-label {
+  color: var(--danger);
+}
+
+.asgn-card.is-soon .day-chip {
+  border-color: color-mix(in srgb, var(--warning) 45%, transparent);
+}
+
+.asgn-card.is-urgent .day-chip,
+.asgn-card.is-overdue .day-chip {
+  border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+}
+
+.asgn-card.is-soon .day-mon {
+  color: var(--warning);
+}
+
+.asgn-card.is-urgent .day-mon,
+.asgn-card.is-overdue .day-mon {
+  color: var(--danger);
+}
+
+/* Overdue work gets a red edge so it cannot be skimmed past. */
+.asgn-card.is-overdue::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  border-radius: var(--r-lg) 0 0 var(--r-lg);
+  background: var(--danger);
+}
+
+/* --- body ---------------------------------------------------------------- */
+
+.asgn-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.asgn-course {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.course-code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.course-title {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.asgn-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.asgn-desc {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+  max-width: 88ch;
+}
+
+.asgn-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 3px;
+}
+
+/* --- marks --------------------------------------------------------------- */
+
+.asgn-marks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 6px 0;
+  border-left: 1px solid var(--border);
+}
+
+.marks-value {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.6px;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+}
+
+.marks-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* --- completed ----------------------------------------------------------- */
+
+.asgn-done {
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--border-strong);
+}
+
+.asgn-done .asgn-card {
+  opacity: 0.66;
+  box-shadow: none;
+  transition: opacity var(--dur-2) var(--ease);
+}
+
+.asgn-done .asgn-card:hover {
+  opacity: 1;
+}
+
+/* --- responsive ---------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .asgn-card {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .asgn-marks {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 6px;
+    padding: 10px 0 0;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .marks-value {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .asgn-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .asgn-due {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding-right: 0;
+    padding-bottom: 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}

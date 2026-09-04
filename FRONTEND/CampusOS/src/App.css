@@ -394,3 +394,83 @@
   border-top-color: var(--accent);
   animation: spin 0.7s linear infinite;
 }
+
+/* --- day heading (shared by the date-ordered pages) ----------------------- */
+
+.day-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.day-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.day-num {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-mon {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.day-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.day-name {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 640;
+  letter-spacing: -0.2px;
+  color: var(--text-h);
+}
+
+.day-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+/* --- meta chip (icon + label, used in list rows) -------------------------- */
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.meta-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
