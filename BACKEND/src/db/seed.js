@@ -4,12 +4,14 @@ import { prisma } from './prismaClient.js';
 
 const DATA_DIR = path.resolve('../data');
 
+// LOADS A JSON FILE FROM THE SEED DATA DIRECTORY, OR RETURNS AN EMPTY ARRAY
 const load = (name) => {
   const file = path.join(DATA_DIR, name);
   if (!fs.existsSync(file)) return [];
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 };
 
+// CLEARS ALL TABLES THEN REINSERTS THE SEED DATA
 async function seed() {
   const schedules = load('schedules.json');
   const rooms = load('rooms.json');
@@ -119,6 +121,7 @@ async function seed() {
   console.log(`  assignments: ${assignments.length}`);
 }
 
+// RUNS THE SEED AND DISCONNECTS PRISMA ON COMPLETION OR ERROR
 seed()
   .catch((e) => { console.error(e); process.exit(1); })
   .finally(() => prisma.$disconnect());

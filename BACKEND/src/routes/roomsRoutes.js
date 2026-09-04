@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/roomsController.js';
 
+// REGISTERS THE ROOM AND BOOKING CRUD ROUTES
 const router = Router();
 
 router.get('/', ctrl.getAllRooms);

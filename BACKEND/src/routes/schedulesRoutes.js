@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/schedulesController.js';
 
+// REGISTERS THE SCHEDULE CRUD ROUTES
 const router = Router();
 
 router.get('/', ctrl.getAllSchedules);

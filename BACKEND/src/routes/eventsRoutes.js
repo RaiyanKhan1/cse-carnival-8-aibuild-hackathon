@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/eventsController.js';
 
+// REGISTERS THE EVENT AND REGISTRATION CRUD ROUTES
 const router = Router();
 
 router.get('/', ctrl.getAllEvents);

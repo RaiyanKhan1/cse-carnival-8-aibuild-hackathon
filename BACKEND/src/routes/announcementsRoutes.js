@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/announcementsController.js';
 
+// REGISTERS THE ANNOUNCEMENT CRUD ROUTES
 const router = Router();
 
 router.get('/', ctrl.getAllAnnouncements);

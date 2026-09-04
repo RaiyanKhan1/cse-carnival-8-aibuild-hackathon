@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// RETURNS A BASIC HEALTH CHECK RESPONSE
 app.get('/api/health', asyncHandler(async (_req, res) => {
   const { SuccessHandler } = await import('./components/successHandler.js');
   SuccessHandler({ ok: true, time: new Date().toISOString() }, res, 200, 'Service is healthy');
@@ -25,7 +26,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/announcements', announcementsRoutes);
 app.use('/api/assignments', assignmentsRoutes);
 
-// Express error-handling middleware — converts thrown errors to the standard envelope.
+// CONVERTS THROWN ERRORS INTO THE STANDARD JSON ENVELOPE
 app.use((err, req, res, _next) => {
   let mapped = err;
   if (err instanceof HttpError) {

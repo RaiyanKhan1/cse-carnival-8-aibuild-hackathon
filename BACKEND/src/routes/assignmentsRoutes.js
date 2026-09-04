@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from '../controllers/assignmentsController.js';
 
+// REGISTERS THE ASSIGNMENT CRUD ROUTES
 const router = Router();
 
 router.get('/', ctrl.getAllAssignments);
